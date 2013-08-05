@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="style.css" type="text/css" />
+        <script type="text/javascript" src="jquery-1.4.2.js"></script>
+        <script type="text/javascript">
+            var pages = new Array();
+            pages['N'] = "<%var next  escape=js %>";
+            pages['P'] = "<%var prev  escape=js %>";
+            pages['L'] = "<%var last  escape=js %>";
+            pages['F'] = "<%var first escape=js %>";
+            pages['I'] = "<%var first escape=js %>";
+            pages[' '] = pages['N'];
+            pages[String.fromCharCode(13)] = pages['N'];
+            $(document).ready(function() {
+                $(document).keyup(function(e) {
+                    var code = e.keyCode || e.which;
+                    var go = pages[String.fromCharCode(code)];
+                    if (go) {
+                        window.location.replace(go)
+                    }
+                });
+            });
+        </script>
+
+        <title><%var title%></title>
+    </head>
+    <body>
+      <div id="page">
+        <h1><%var title%></h1>
+        <%var contents escape=none%>
+
+        <%if normal_page%>
+        <p>
+        <a href="<%var first escape=url%>">« first</a>
+        <a href="<%var prev  escape=url%>">&lt; prev</a>
+        (<%var page_num %> / <%var total_page_count%>)
+        <a href="<%var next  escape=url%>">next &gt;</a>
+        <a href="<%var last  escape=url%>">last »</a>
+        </p>
+        <%/if%>
+      </div>
+    </body>
+</html>

@@ -30,8 +30,55 @@ affiliation: #perl6
 
  * Tells you which level the error is on (syntax)
  * Tells you where the error is
+ * Tells you that the error is fatal
 
 = But not yet awesome
 
   * Does not tell you what the problem is
   * Does not tell you how to fix it
+
+= We can do better
+:text
+
+   $ perl6 -e 'sub elephant { }; elegant();'
+    ===SORRY!=== Error while compiling -e
+    Undeclared routine:
+        elegant used at line 1. Did you mean '&elephant'?
+
+= Useful features
+
+  * undeclared routine called at compile time
+  * suggestions for misspelled routines
+  * batching (several missing routines reported in one error message)
+
+= Handling Errors in Perl 6
+:perl6
+
+    sub might-die {
+        die "Bad luck" if Bool.pick
+    }
+    try { might-die() }
+    if $! {
+        say "Good luck";
+    }
+    else {
+        say "Bad luck";
+    }
+
+= Simplification
+:perl6
+
+    try might-die();
+
+= What's in $! anyway?
+:text
+
+    $ ./perl6 -e 'try die "gone wrong"; say $!.perl'
+    X::AdHoc.new(payload => "gone wrong")
+
+= What's in $! anyway?
+
+  * Always of class Exception
+  * If the argument to `die` isn't of type Exception, wrapped in `X::AdHoc`
+  * Has methods `$!.backtrace', `.throw`, `.message`
+

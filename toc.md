@@ -37,6 +37,8 @@ Culture
 
 * Error reporting is taken seriously
 * "LTA Error" is considered a bug
+* New syntax not introduced if it makes parse error messages worse
+  (-> ttiar errors)
 
 Future Perl 6
 -------------

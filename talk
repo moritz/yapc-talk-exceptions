@@ -73,12 +73,115 @@ affiliation: #perl6
 = What's in $! anyway?
 :text
 
-    $ ./perl6 -e 'try die "gone wrong"; say $!.perl'
+    $ perl6 -e 'try die "gone wrong"; say $!.perl'
     X::AdHoc.new(payload => "gone wrong")
+    $ perl6 -e 'say X::AdHoc.^mro'
+    (X::AdHoc) (Exception) (Any) (Mu)
 
 = What's in $! anyway?
 
   * Always of class Exception
   * If the argument to `die` isn't of type Exception, wrapped in `X::AdHoc`
   * Has methods `$!.backtrace', `.throw`, `.message`
+
+= Your own exception classes
+:perl6
+
+    class X::Disco::TooYoung {
+        has $.age;
+        has $.min-age;
+        method message {
+            "With $.age years you are too young"
+            ~  " (minimal age $.min-age)";
+        }
+    }
+
+= Use your own exception classes
+:perl6
+
+    sub enter-disco($age) {
+        if $age < 18 {
+            die X::Disco::TooYoung.new(
+                :$age,
+                min-age => 18,
+            );
+        }
+        say "Entering disco";
+    }
+
+= Catch only some exceptions
+:perl6
+
+    my $age = prompt 'your age?';
+    enter-disco $age;
+    CATCH {
+        when X::Disco::TooYoung {
+            # do something sensible
+        }
+        # all other exceptions are ignored.
+    }
+
+= Use cases
+
+ * retry only on temporary errors
+ * distinguish user errors from internal errors
+
+= Backtraces
+
+ * `$!.backtrace`
+ * List of `Backtrace::Frame` objects
+ * Each frame has file, line, reference to code object
+ * Lots of filtering in default stringification
+
+= Backtrace Excursion - Filtering
+:perl6
+
+    sub f {
+        for 1..5 {
+            die 'How deep?';
+        }
+    }
+    try f;
+
+    say $!.backtrace.Str;
+    say $!.backtrace.full.Str;
+
+= Backtrace Excursion - filtered output
+:text
+
+# say $!.backtrace.Str;
+  in sub f at bt1.pl:3
+  in block  at bt1.pl:6
+
+= Backtrace Excursion - full output
+:text
+
+# say $!.backtrace.full.Str;
+  in method throw at src/gen/CORE.setting:10033
+  in sub die at src/gen/CORE.setting:638
+  in sub die at src/gen/CORE.setting:635
+  in block  at bt1.pl:3
+  in block  at src/gen/CORE.setting:6774
+  in method reify at src/gen/CORE.setting:6751
+  in block  at src/gen/CORE.setting:6669
+  in method reify at src/gen/CORE.setting:6641
+  in method gimme at src/gen/CORE.setting:7102
+  in method eager at src/gen/CORE.setting:7078
+  in sub f at bt1.pl:2
+  in code  at bt1.pl:6
+  in block  at bt1.pl:9
+  in any  at bt1.pl:1
+
+= Backtrace Excursion - What's in there
+
+* `for`-loop implemented in terms of `List.map`
+* Lists are lazy, and list elements on demand
+* Implementation details from the setting
+* Entry point into the program (compilation unit)
+
+= Backtrace Excursion - Filtering
+
+* Routines can be statically marked as being hidden from backtrace
+* Routines from the setting are generally ignored
+* Static and dynamic call chain are intersected
 

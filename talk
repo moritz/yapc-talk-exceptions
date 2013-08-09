@@ -185,3 +185,51 @@ affiliation: #perl6
 * Routines from the setting are generally ignored
 * Static and dynamic call chain are intersected
 
+= Writing our own Filter
+
+* Backtraces are great for developers
+* but the poor user doesn't care about our call stack
+* so let's try to show something more useful
+
+= Preparations
+:perl6
+
+multi sub trait_mod:<is>(Routine:D $r, :$user-facing!) {
+    my role Described[$by] {
+        method descr() { $by }
+    }
+    $r does Described[$user-facing];
+}
+
+= Give some subroutines user-facing descriptions
+:perl6
+
+sub save-state() {
+    save-config;
+}
+
+# we want to show this one to the user
+sub save-config() is user-facing('saving user config') {
+    my $f = open :w, '/no/such/path';
+}
+try save-state;
+
+= Filter the backtrace
+:perl6
+
+if $! {
+     say "Error: ", $!.message();
+     for $!.backtrace.list {
+         if .code.^can('descr') {
+             say "  while ", .code.descr;
+         }
+     }
+ }
+
+= Example output
+:text
+
+Error: Unable to open filehandle from path '/no/such/path':
+	No such file or directory(2)
+  while saving user config
+

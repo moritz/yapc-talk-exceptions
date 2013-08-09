@@ -82,7 +82,7 @@ affiliation: #perl6
 
   * Always of class Exception
   * If the argument to `die` isn't of type Exception, wrapped in `X::AdHoc`
-  * Has methods `$!.backtrace', `.throw`, `.message`
+  * Has methods `$!.backtrace`, `.throw`, `.message`
 
 = Your own exception classes
 :perl6

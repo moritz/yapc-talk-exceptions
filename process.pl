@@ -139,7 +139,7 @@ $s5->param('slides' => \@s5_slides);
 
 sub hilight {
     my ($type, $text) = @_;
-    my $cachekey = md5("$type|$text");
+    my $cachekey = md5(encode_utf8 "$type|$text");
     my $c = $cache->get($cachekey);
     return $c if defined $c;
 

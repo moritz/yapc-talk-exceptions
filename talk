@@ -66,9 +66,9 @@ affiliation: #perl6
     }
 
 = Simplification
-:perl6
 
-    try might-die();
+*  `try might-die` (without braces)
+* Unholy aliance between evaling and exception catching is gone.
 
 = What's in $! anyway?
 :text
@@ -83,6 +83,24 @@ affiliation: #perl6
   * Always of class Exception
   * If the argument to `die` isn't of type Exception, wrapped in `X::AdHoc`
   * Has methods `$!.backtrace`, `.throw`, `.message`
+
+= Some built-in exception types
+:text
+
+$ perl6 -e 'try chmod 0o777, "/"; say $!.message; say $!.perl'
+Failed to set the mode of '/' to '0o777':
+    chmod failed: Operation not permitted
+X::IO::Chmod.new(path => "/", mode => 511,
+    os-error => "chmod failed: Operation not permitted")
+
+= Some built-in exception types
+:text
+
+$ perl6 -e 'try :16("OH"); say $!.message; say $!.perl'
+Cannot convert string to number: base-16 number must
+    begin with valid digits or '.' in ':16<⏏OH>' (indicated by ⏏)
+X::Str::Numeric.new(source => ":16<OH>", pos => 4,
+    reason => "base-16 number must begin with valid digits or '.'")
 
 = Your own exception classes
 :perl6
@@ -230,6 +248,19 @@ if $! {
 :text
 
 Error: Unable to open filehandle from path '/no/such/path':
-	No such file or directory(2)
+	No such file or directory
   while saving user config
 
+= Principles of good exception design
+
+* Carry all potentially interesting information in the exception
+* Example: code objects, not just names of routines
+* When displaying the exception, filter to your heart's desire
+* (You could implement Carp::croak this way)
+
+= Some missing bits
+
+* Translations of exceptions
+* User-defined warnings
+* Logging?
+* Not all errors from the compiler and the setting are of the proper type

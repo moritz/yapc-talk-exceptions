@@ -97,9 +97,9 @@ X::IO::Chmod.new(path => "/", mode => 511,
 :text
 
 $ perl6 -e 'try :16("OH"); say $!.message; say $!.perl'
-Cannot convert string to number: base-16 number must
+Cannot convert string to number: base-16 number must ⏎
     begin with valid digits or '.' in ':16<⏏OH>' (indicated by ⏏)
-X::Str::Numeric.new(source => ":16<OH>", pos => 4,
+X::Str::Numeric.new(source => ":16<OH>", pos => 4, ⏎
     reason => "base-16 number must begin with valid digits or '.'")
 
 = Your own exception classes
@@ -247,7 +247,7 @@ if $! {
 = Example output
 :text
 
-Error: Unable to open filehandle from path '/no/such/path':
+Error: Unable to open filehandle from path '/no/such/path': ⏎
 	No such file or directory
   while saving user config
 

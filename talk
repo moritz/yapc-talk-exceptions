@@ -47,7 +47,7 @@ affiliation: #perl6
 
 = Useful features
 
-  * undeclared routine called at compile time
+  * undeclared routine caught at compile time
   * suggestions for misspelled routines
   * batching (several missing routines reported in one error message)
 
@@ -68,7 +68,7 @@ affiliation: #perl6
 = Simplification
 
 *  `try might-die` (without braces)
-* Unholy aliance between evaling and exception catching is gone.
+* Unholy aliance between `eval`ing and exception catching is gone.
 
 = What's in $! anyway?
 :text

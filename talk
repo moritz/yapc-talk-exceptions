@@ -133,6 +133,7 @@ X::Str::Numeric.new(source => ":16<OH>", pos => 4, ⏎
     my $age = prompt 'your age?';
     enter-disco $age;
     CATCH {
+        # inner scope; all variables available!
         when X::Disco::TooYoung {
             # do something sensible
         }
@@ -144,6 +145,7 @@ X::Str::Numeric.new(source => ":16<OH>", pos => 4, ⏎
 
  * retry only on temporary errors
  * distinguish user errors from internal errors
+ * RPC: distinguish transport errors from errors by the remote party
 
 = Backtraces
 

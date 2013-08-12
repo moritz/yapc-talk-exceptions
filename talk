@@ -87,7 +87,8 @@ affiliation: #perl6
 = Some built-in exception types
 :text
 
-$ perl6 -e 'try chmod 0o777, "/"; say $!.message; say $!.perl'
+$ perl6 -e 'try chmod 0o777, "/"; say $!.message;
+    say $!.perl'
 Failed to set the mode of '/' to '0o777':
     chmod failed: Operation not permitted
 X::IO::Chmod.new(path => "/", mode => 511,
@@ -98,9 +99,11 @@ X::IO::Chmod.new(path => "/", mode => 511,
 
 $ perl6 -e 'try :16("OH"); say $!.message; say $!.perl'
 Cannot convert string to number: base-16 number must ⏎
-    begin with valid digits or '.' in ':16<⏏OH>' (indicated by ⏏)
+    begin with valid digits or '.' in ':16<⏏OH>' ⏎
+    (indicated by ⏏)
 X::Str::Numeric.new(source => ":16<OH>", pos => 4, ⏎
-    reason => "base-16 number must begin with valid digits or '.'")
+    reason => "base-16 number must begin with valid ⏎
+    digits or '.'")
 
 = Your own exception classes
 :perl6
@@ -222,7 +225,7 @@ multi sub trait_mod:<is>(Routine:D $r, :$user-facing!) {
     $r does Described[$user-facing];
 }
 
-= Give some subroutines user-facing descriptions
+= Give routines user-facing descriptions
 :perl6
 
 sub save-state() {
@@ -230,7 +233,7 @@ sub save-state() {
 }
 
 # we want to show this one to the user
-sub save-config() is user-facing('saving user config') {
+sub save-config() is user-facing('saving config') {
     my $f = open :w, '/no/such/path';
 }
 try save-state;
@@ -252,7 +255,7 @@ if $! {
 
 Error: Unable to open filehandle from path '/no/such/path': ⏎
         No such file or directory
-  while saving user config
+  while saving config
 
 = Principles of good exception design
 
@@ -260,6 +263,12 @@ Error: Unable to open filehandle from path '/no/such/path': ⏎
 * Example: code objects, not just names of routines
 * When displaying the exception, filter to your heart's desire
 * (You could implement Carp::croak this way)
+
+= Error reporting and community
+
+* Perl 6 community takes error reporting seriously
+* "Less than awesome" (LTA) errors are bugs
+* We reject syntactic features that would degrade syntax errors
 
 = Some missing bits
 
@@ -269,9 +278,18 @@ Error: Unable to open filehandle from path '/no/such/path': ⏎
 * Logging?
 * Exporting exception handlers from modules
 
+= Summary
+
+* Cleaned-up exception handling
+* Exception types encouraged
+* Carry interesting information, filter at display time
+* System is extensible
+
 = Thank you
 :raw
 
 <p style="margin-left: auto; margin-right: auto; width: 300px; margin-top: 10ex">
 <img src="noris_logo.gif" alt="noris network AG, sponsor" />
+<br style="margin-bottom: 5ex" />
+<strong>We are not hiring :-)</strong><br />
 </p>

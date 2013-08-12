@@ -136,7 +136,8 @@ X::Str::Numeric.new(source => ":16<OH>", pos => 4, ⏎
         when X::Disco::TooYoung {
             # do something sensible
         }
-        # all other exceptions are ignored.
+        # all other exceptions 
+        # transparently rethrown
     }
 
 = Use cases
@@ -248,7 +249,7 @@ if $! {
 :text
 
 Error: Unable to open filehandle from path '/no/such/path': ⏎
-	No such file or directory
+        No such file or directory
   while saving user config
 
 = Principles of good exception design
@@ -262,5 +263,13 @@ Error: Unable to open filehandle from path '/no/such/path': ⏎
 
 * Translations of exceptions
 * User-defined warnings
-* Logging?
 * Not all errors from the compiler and the setting are of the proper type
+* Logging?
+* Exporting exception handlers from modules
+
+= Thank you
+:raw
+
+<p style="margin-left: auto; margin-right: auto; width: 300px; margin-top: 10ex">
+<img src="noris_logo.gif" alt="noris network AG, sponsor" />
+</p>

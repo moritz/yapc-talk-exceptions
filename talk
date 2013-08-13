@@ -108,7 +108,7 @@ X::Str::Numeric.new(source => ":16<OH>", pos => 4, ⏎
 = Your own exception classes
 :perl6
 
-    class X::Disco::TooYoung {
+    class X::Disco::TooYoung is Exception {
         has $.age;
         has $.min-age;
         method message {
